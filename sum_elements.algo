@@ -3,23 +3,42 @@
 // algorithm sum equal element of two table
 ALGORITHM sum1_table
 VAR
-    arr1_sol1:ARRAY_OF INTEGER[5];
-    arr2_sol1:ARRAY_OF INTEGER[5];
-    i,j,sum_sol1:INTEGER:=0;
+    arr1_sol1:ARRAY_OF INTEGER[];
+    arr2_sol1:ARRAY_OF INTEGER[];
+    i,j,leng1,leng2:INTEGER;
+    sum_sol1:INTEGER=0;
 
 BEGIN
-    FOR i FROM 0 TO 4 STEP 1  DO
+// saisir les deux tableaux
+        write("Enter length of table 1 : ");
+        read(leng1);
+        write("Enter length of table 2 : ");
+        read(leng2);
+        FOR i FROM 0 TO leng1-1 STEP 1  DO
         write("Enter the element from table 1 : ");
         read(arr1_sol1[i]);
+        END_FOR
+        FOR i FROM 0 TO leng2-1 STEP 1  DO
         write("Enter the element from table 2 : ");
         read(arr2_sol1[i]);
-    END_FOR
-    FOR i FROM 0 TO 4 STEP 1  DO
-    FOR j FROM 0 TO 4 STEP 1  DO
-        IF (arr1_sol1[i]=arr2[j]) THEN
-            sum_sol1:=sum_sol1 + arr1_sol1[i];
-        END_IF
         END_FOR
+    FOR i FROM 0 TO leng1-1 STEP 1  DO
+    j:=0;
+        WHILE (arr1_sol1[i]<>arr2[j] AND j < leng2) DO
+            j++;
+        END_WHILE
+        IF (j = leng2) THEN
+                sum_sol1:=sum_sol1 + arr1_sol1[i];
+            END_IF
+    END_FOR
+    FOR i FROM 0 TO leng2-1 STEP 1  DO
+    j:=0;
+        WHILE (arr2_sol1[i]<>arr1[j] AND j < leng2) DO
+            j++;
+        END_WHILE
+        IF (j = leng2) THEN
+                sum_sol1:=sum_sol1 + arr1_sol1[i];
+            END_IF
     END_FOR
     write("Sum of elements : ",sum_sol1);
 END
@@ -29,34 +48,52 @@ END
 ALGORITHM sum1_hash_table
 VAR
     htab : HASH_TABLE<INTEGER,INTEGER>;
-    arr1_sol1:ARRAY_OF INTEGER[5];
-    arr2_sol1:ARRAY_OF INTEGER[5];
-    sum,count:INTEGER:=0;
+    arr1_sol1:ARRAY_OF INTEGER[];
+    arr2_sol1:ARRAY_OF INTEGER[];
+    sum,count:INTEGER;
     i:INTEGER;
 BEGIN
-        FOR i FROM 0 TO arr1_sol1.length-1 STEP 1  DO
+// saisir les deux tableaux
+        write("Enter length of table 1 : ");
+        read(leng1);
+        write("Enter length of table 2 : ");
+        read(leng2);
+        FOR i FROM 0 TO leng1-1 STEP 1  DO
         write("Enter the element from table 1 : ");
         read(arr1_sol1[i]);
+        END_FOR
+        FOR i FROM 0 TO leng2-1 STEP 1  DO
         write("Enter the element from table 2 : ");
         read(arr2_sol1[i]);
         END_FOR
+        
     FOR i FROM 0 TO arr1_sol1.length-1  STEP 1  DO
         IF (htab.lookup(arr1_sol1[i]) = TRUE) THEN
             count:=htab.get(arr1_sol1[i]);
             htab.insert(arr1_sol1[i],count+1);
+
         ELSE
-                htab.insert(arr1_sol1[i],0);
-        END_IF
-        IF (htab.lookup(arr2_sol1[i]) = TRUE) THEN
-            count:=htab.get(arr2_sol1[i]);
-            htab.insert(arr2_sol1[i],count+1);
-        ELSE
-                htab.insert(arr2_sol1[i],0);
+                htab.insert(arr1_sol1[i],1);
         END_IF
     END_FOR
     FOR i FROM 0 TO arr1_sol1.length-1  STEP 1  DO
-        IF (htab.get(arr1_sol1[i])>0) THEN
+        IF (htab.lookup(arr2_sol1[i]) = TRUE) THEN
+            count:=htab.get(arr2_sol1[i]);
+            htab.insert(arr2_sol1[i],count+1);
+
+        ELSE
+                htab.insert(arr2_sol1[i],1);
+
+        END_IF
+    END_FOR
+    FOR i FROM 0 TO arr1_sol1.length-1  STEP 1  DO
+        IF (htab.get(arr1_sol1[i])=1) THEN
             sum:=sum+arr1_sol1[i];
+        END_IF
+    END_FOR
+    FOR i FROM 0 TO arr2_sol1.length-1  STEP 1  DO
+        IF (htab.get(arr2_sol1[i])=1) THEN
+            sum:=sum+arr2_sol1[i];
         END_IF
     END_FOR
     write("Sum of elements : ",sum);
@@ -68,21 +105,28 @@ END
 
 ALGORITHM sum2_table
 VAR
-    arr1_sol2:ARRAY_OF INTEGER[5];
-    arr2_sol2:ARRAY_OF INTEGER[5];
+    arr1_sol2:ARRAY_OF INTEGER[];
+    arr2_sol2:ARRAY_OF INTEGER[];
     sum_sol2:INTEGER:=0;
-    i,j,num_rep:INTEGER;
+    i,j,num_rep,leng1,leng2:INTEGER;
 
 BEGIN
-    FOR i FROM 0 TO 4 STEP step  DO
+// saisir les deux tableaux
+        write("Enter length of table 1 : ");
+        read(leng1);
+        write("Enter length of table 2 : ");
+        read(leng2);
+        FOR i FROM 0 TO leng1-1 STEP 1  DO
         write("Enter the element from table 1 : ");
         read(arr1_sol2[i]);
+        END_FOR
+        FOR i FROM 0 TO leng2-1 STEP 1  DO
         write("Enter the element from table 2 : ");
         read(arr2_sol2[i]);
-    END_FOR
-    FOR i FROM 0 TO 4 STEP 1  DO
+        END_FOR
+    FOR i FROM 0 TO length.arr1_sol1 STEP 1  DO
         num_rep:=1;
-    FOR j FROM 0 TO 4 STEP 1  DO
+    FOR j FROM 0 TO length.arr1_sol2 STEP 1  DO
         IF (arr1_sol2[i]=arr2_sol2[j]) THEN
             sum_sol2:=sum_sol2 + arr1_sol2[i]*num_rep;
             num_rep:=num_rep + 1;
@@ -100,11 +144,18 @@ VAR
     arr1_sol2:ARRAY_OF INTEGER[5];
     arr2_sol2:ARRAY_OF INTEGER[5];
     sum,count:INTEGER:=0;
-    i:INTEGER;
+    i,leng1,leng2:INTEGER;
 BEGIN
-        FOR i FROM 0 TO arr1_sol2.length-1 STEP 1  DO
+        // saisir les deux tableaux
+        write("Enter length of table 1 : ");
+        read(leng1);
+        write("Enter length of table 2 : ");
+        read(leng2);
+        FOR i FROM 0 TO leng1-1 STEP 1  DO
         write("Enter the element from table 1 : ");
         read(arr1_sol2[i]);
+        END_FOR
+        FOR i FROM 0 TO leng2-1 STEP 1  DO
         write("Enter the element from table 2 : ");
         read(arr2_sol2[i]);
         END_FOR
@@ -119,11 +170,11 @@ BEGIN
             count:=htab.get(arr2_sol2[i]);
             htab.insert(arr2_sol2[i],count+1);
         ELSE
-                htab.insert(arr2_sol2[i],0);
+                htab.insert(arr2_sol2[i],1);
         END_IF
     END_FOR
     FOR i FROM 0 TO arr1_sol2.length-1  STEP 1  DO
-        IF (htab.get(arr1_sol2[i])>0) THEN
+        IF (htab.get(arr1_sol2[i])>1) THEN
             sum:=sum+(arr1_sol2[i] * htab.get(arr1_sol2[i]));
         END_IF
     END_FOR
